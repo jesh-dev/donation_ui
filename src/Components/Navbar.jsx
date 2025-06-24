@@ -67,13 +67,13 @@ export default function Navbar() {
                   <X size={24} className="text-gray-700 dark:text-white" />
                 </button>
               </div>
-              <nav className="flex flex-col space-y-4 text-sm">
+              <nav className="flex flex-col space-y-10 text-sm">
                 <Link to="/" onClick={closeMenu} className="hover:text-blue-500">Home</Link>
                 <Link to="/about" onClick={closeMenu} className="hover:text-blue-500">About</Link>
                 <Link to="/contact" onClick={closeMenu} className="hover:text-blue-500">Contact</Link>
                 <hr className="my-4 border-gray-300 dark:border-gray-700" />
                 {/* <Link to="/login" onClick={closeMenu} className="text-blue-600 hover:underline">Sign In</Link> */}
-                <Link to="/register" onClick={closeMenu} className="text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Sign In/Up</Link>
+                <Link to="/register" onClick={closeMenu} className="text-white bg-blue-600 active:scale-[1.02] px-4 py-2 rounded hover:bg-blue-700">Sign In/Up</Link>
               </nav>
             </motion.aside>
           </>

@@ -1,25 +1,42 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User, CreditCard, TrendingUp } from "lucide-react";
-
-const stats = [
-  {
-    label: "Total Users",
-    value: "1,240",
-    icon: <User size={28} className="text-blue-600" />,
-  },
-  {
-    label: "Total Donations",
-    value: "₦980,000",
-    icon: <CreditCard size={28} className="text-green-600" />,
-  },
-  {
-    label: "Recent Activity",
-    value: "₦25,000",
-    icon: <TrendingUp size={28} className="text-purple-600" />,
-  },
-];
+import axiosInstance from "../../Components/axiosInstance"; // your axios with token
 
 export default function DashboardOverview() {
+  const [totalUsers, setTotalUsers] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axiosInstance.get("/admin/total-users"); // ← create this endpoint
+        setTotalUsers(res.data.count); // response should be: { count: 1234 }
+      } catch (err) {
+        console.error("Failed to fetch total users", err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  const stats = [
+    {
+      label: "Total Users",
+      value: totalUsers !== null ? totalUsers.toLocaleString() : "Loading...",
+      icon: <User size={28} className="text-blue-600" />,
+    },
+    {
+      label: "Total Donations",
+      value: "₦980,000", // Make dynamic later if needed
+      icon: <CreditCard size={28} className="text-green-600" />,
+    },
+    {
+      label: "Recent Activity",
+      value: "₦25,000", // Make dynamic later if needed
+      icon: <TrendingUp size={28} className="text-purple-600" />,
+    },
+  ];
+
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {stats.map((item, i) => (

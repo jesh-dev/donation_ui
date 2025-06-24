@@ -38,7 +38,6 @@ export default function AuthPage() {
     const newErrors = {};
     if (!formData.firstname.trim())
       newErrors.firstname = "Firstname is required";
-    // if (!formData.code.trim()) newErrors.code = "code is required";
     if (!formData.lastname.trim()) newErrors.lastname = "lastname is required";
     if (!formData.email.trim()) newErrors.email = "Valid email is required";
     if (!formData.phone_number.trim())
@@ -69,22 +68,15 @@ export default function AuthPage() {
       });
 
       // Debug: see what you get from backend
-      console.log("Registration response:", response);
+      // console.log("Registration response:", response);
 
-      // Success case — accept 200 or 201 and check for a message
       if (response.status === 200 && response.data.success) {
         showMessage(response.data.message, "success");
         setShowVerification(true);
-        // console.log(response);
       } else {
         console.log(response);
       }
     } catch (error) {
-      // console.error("Registration error:", error);
-      // const message =
-      //   error?.response?.data?.message ||
-      //   error.message ||
-      //   "Something went wrong.";
 
       showMessage(message, "error");
     }
@@ -111,19 +103,17 @@ export default function AuthPage() {
     }
     try {
       await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+    const response = await axios.post("http://127.0.0.1:8000/api/login", {
         email: formData.email.trim(),
         password: formData.password.trim(),
       });
       const verified = response.data.user.email_verified_at;
       if (verified === null) {
-        showMessage("Please verify your email", "error");
-        // console.log("Verification status:", response.data.user.email_verified_at);
+        showMessage("Please verify your email:", response.data.user.message, "error");
       } else {
         if (response.status === 200 && response.data.success) {
           setUser(response.data.user);
           showMessage(response.data.message);
-          // console.log(response);
           if (response.data.user.role === "admin") {
             navigate("/admin");
           } else {
@@ -132,12 +122,6 @@ export default function AuthPage() {
         }
       }
     } catch (error) {
-      // console.error("Registration error:", error);
-      // const message =
-      //   error.response ||
-      //   error.message ||
-      //   "Something went wrong.";
-
       showMessage(error.response.data.message, "error");
     }
   };
@@ -156,21 +140,13 @@ export default function AuthPage() {
       console.log("✅ Verification Response:", response);
 
       if (response.status === 201) {
-        // setMessage(response.data.message);
         setShowVerification(false);
         setIsSignIn(true);
         showMessage("🎉 Verified!", "success");
       } else {
-        // console.error("⚠️ Unexpected status:", response);
         showMessage(response.data.user.email_verified_at, "error");
       }
     } catch (error) {
-      // console.error("Verification error:", error);
-      // const message =
-      //   error?.response?.data?.message ||
-      //   error.message ||
-      //   "Something went wrong.";
-
       showMessage(message);
     }
   };
@@ -240,6 +216,7 @@ export default function AuthPage() {
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
                 <button onClick={() => setShowPassword(!showPassword)}
+                  type="button"
                   className="absolute transition-all duration-300 delay-300 right-12 pt-3 text-blue-500  bottom-21 hover:scale-[1.05] hover:text-blue-800"
                   >{showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -371,7 +348,7 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
-                   <button onClick={() => setShowPassword(!showPassword)}
+                   <button onClick={() => setShowPassword(!showPassword)} type="button"
                   className="absolute transition-all duration-300 delay-300 right-12 pt-3 text-blue-500  bottom-21 hover:scale-[1.05] hover:text-blue-800"
                   >{showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -391,6 +368,7 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 /><button onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                   type="button"
                   className="absolute transition-all duration-300 delay-300 right-12 pt-3 text-blue-500  bottom-21 hover:scale-[1.05] hover:text-blue-800"
                   >{showConfirmPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -406,7 +384,7 @@ export default function AuthPage() {
 
                 <button
                   type="submit"
-                  className="w-full active:scale-[] bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                  className="w-full active:scale-[1.05] active:bg-slate-500 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
                 >
                   Sign Up
                 </button>
@@ -445,7 +423,6 @@ export default function AuthPage() {
                   <input
                     type="text"
                     placeholder="6-digit code"
-                    // onChange={handleChange}
                     value={formData.code}
                     onChange={(e) => setCode(e.target.value)}
                     className="w-full px-4 py-2 border rounded mb-4 dark:bg-gray-700 dark:text-white"
@@ -453,7 +430,7 @@ export default function AuthPage() {
                   <button
                     onClick={handleVerify}
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                    className="w-full bg-blue-600 active:scale-[1.05] active:bg-slate-500 text-white py-2 rounded hover:bg-blue-700 transition"
                   >
                     Verify Account
                   </button>

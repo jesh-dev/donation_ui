@@ -13,6 +13,7 @@ import AdminUsers from "./Admin/AdminComponents/Users";
 import AdminPayments from "./Admin/AdminComponents/adminPayment";
 import Logout from "./Components/Logout";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import Block from "./Components/BlockAttack";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
       <Route path="/contact" element={<ContactPage/>}/>
       <Route path="/register" element={<AuthPage/>}/>
       <Route path="/logout" element={<Logout/>}/>
+      <Route path="/block" element={<Block/>}/>
 
       {/* Dashboard Route */}
       <Route path="/dashboard" element={<ProtectedRoute role='user'><DashboardLayout /></ProtectedRoute>}>

@@ -63,7 +63,7 @@ export default function UserSidebar() {
                   </Link>
                 ))}
 
-                <button className=" absolute md:hidden bottom-5 block left-8 px-4 py-2 rounded-lg transition hover:bg-blue-700 dark:hover:bg-blue-700 dark:text-white">
+                <button className=" absolute md:hidden  bottom-5 block left-8 px-4 py-2 rounded-lg transition hover:bg-blue-700 dark:hover:bg-blue-700 dark:text-white">
                   <Link to="/logout">
                     <LogOut size={20} />
                   </Link>

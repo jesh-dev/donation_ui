@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import back from '../assets/Images/aboutimg.jpg'; // ✅ Import image directly
+
 
 export default function AboutPage() {
   return (
@@ -12,9 +14,9 @@ export default function AboutPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="relative h-[50vh] bg-cover bg-center bg-no-repeat flex items-center justify-center px-6"
-        style={{ backgroundImage: "url('/images/about-hero.jpg')" }}
+        style={{ backgroundImage: `url(${back})` }}
       >
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-0" />
+        <div className="absolute inset-0 bg-transparent backdrop-brightness-50 bg-opacity-50 z-0" />
         <div className="relative z-10 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold">About ECEF</h1>
           <p className="mt-4 text-lg">Faith, Growth, and Community Impact</p>
@@ -30,7 +32,20 @@ export default function AboutPage() {
       >
         <div className="max-w-4xl mx-auto">
           <p className="mb-4 text-base md:text-lg">
-            Esocs Centenary Endowment Funds (ECEF) is a Christ-centered initiative committed to furthering the gospel and strengthening church projects through intentional giving. Since our establishment in 2003, we’ve been a vessel for change in our community and beyond.
+
+<i className="text-3xl font-bold">Welcome</i> to Esocs Centenary Endowment Funds (ECEF), a Christ-centered initiative that is devoted to advancing the gospel and empowering church projects through intentional and purposeful giving. Established in 2003, ECEF has served as a transformative vessel for change within our community and beyond, striving to embody the love and teachings of Christ in all our efforts.
+
+At ECEF, we recognize the profound impact that generosity and faith can have on individuals and communities alike. Our mission is deeply rooted in the belief that by pooling our resources and talents, we can foster spiritual growth, nurture community projects, and create impactful outreach programs that spread hope and the message of Jesus Christ. We are dedicated to empowering church initiatives that not only meet immediate needs but also cultivate long-term sustainability and growth.
+
+Our vision is to raise a generation of believers who are not only generous but also spirit-filled and firmly grounded in God's Word. We believe that a committed community of faith can achieve anything when united in purpose and driven by love. To this end, we strive to inspire individuals to embrace a lifestyle of giving that transcends mere financial support—one that encompasses time, energy, and expertise. By encouraging active participation in our initiatives, we aim to build a strong foundation for Christian stewardship.
+
+From our varied outreach programs that touch lives in tangible ways, to substantial infrastructure development that supports local churches, ECEF is a dynamic platform designed for lasting kingdom impact. We work collaboratively with churches, organizations, and individuals who share our passion for service and our commitment to spreading the gospel. Our projects span a wide range of activities, including educational scholarships, community development, disaster relief, and missionary support.
+
+Through our initiatives, we strive to address both the spiritual and practical needs of the people we serve. We provide resources, training, and support to equip local leaders and volunteers, enabling them to make a meaningful difference in their communities. It is our firm belief that by investing in the lives of individuals and equipping them for service, we can create a ripple effect that extends far beyond our immediate reach.
+
+As we look to the future, we are excited about the possibilities that lie ahead. With God’s guidance, we aim to expand our reach and deepen our impact. We invite you to join us on this journey—whether through financial contributions, volunteering your time and skills, or simply spreading the word about our mission. Every action, no matter how small, contributes to the greater vision of uplifting our communities in faith and love.
+
+In conclusion, Esocs Centenary Endowment Funds is more than just an initiative; it is a calling to all believers to step into their purpose and to give selflessly in service to others. We invite you to connect with us, to learn more about our projects, and to discover how you can be part of the transformative work we are doing. Together, let’s make a lasting impact for God’s kingdom!
           </p>
 
           <p className="mb-4 text-base md:text-lg">

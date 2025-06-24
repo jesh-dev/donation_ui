@@ -62,13 +62,13 @@ function ContactPage() {
   return (
     <>
       <Navbar />
-      <div className=" bg-white mt-10 mb-14 flex container mr-0 ml-0 items-center justify-center mx-0 p-4">
+      <div className=" bg-white dark:bg-slate-800 flex justify-center align-center p-4">
         {/* Container card */}
-        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full p-6 md:p-8 sm:p-4">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">
+        <div className="bg-white mt-20 mb-20 dark:bg-slate-600 rounded-lg shadow-xl max-w-4xl w-full p-6 md:p-8 sm:p-4">
+          <h2 className="text-3xl dark:text-white font-bold text-gray-800 text-center mb-4">
             Get in Touch
           </h2>
-          <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="text-center dark:text-white text-gray-600 mb-8 max-w-2xl mx-auto text-sm md:text-base">
             We'd love to hear from you! Fill out the form below to send us a
             message.
           </p>
@@ -81,7 +81,7 @@ function ContactPage() {
             {/* Name */}
             <div className="flex flex-col w-full">
               <label
-                className="mb-2 text-sm font-medium text-gray-700"
+                className="mb-2 dark:text-white text-sm font-medium text-gray-700"
                 htmlFor="name"
               >
                 Full Name
@@ -102,7 +102,7 @@ function ContactPage() {
             {/* Email */}
             <div className="flex flex-col w-full">
               <label
-                className="mb-2 text-sm font-medium text-gray-700"
+                className="dark:text-white mb-2 text-sm font-medium text-gray-700"
                 htmlFor="email"
               >
                 Email
@@ -123,7 +123,7 @@ function ContactPage() {
             {/* Subject (full width on small screens) */}
             <div className="md:col-span-2 flex flex-col w-full">
               <label
-                className="mb-2 text-sm font-medium text-gray-700"
+                className="mb-2 dark:text-white text-sm font-medium text-gray-700"
                 htmlFor="subject"
               >
                 Subject
@@ -144,7 +144,7 @@ function ContactPage() {
             {/* Message (full width on small screens) */}
             <div className="md:col-span-2 flex flex-col w-full">
               <label
-                className="mb-2 text-sm font-medium text-gray-700"
+                className="mb-2 dark:text-white text-sm font-medium text-gray-700"
                 htmlFor="message"
               >
                 Message
@@ -197,10 +197,10 @@ function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 text-sm md:text-base">
+                  <h4 className="font-semibold dark:text-gray-200 text-gray-800 text-sm md:text-base">
                     Location
                   </h4>
-                  <p className="text-gray-600 text-xs md:text-sm">
+                  <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm">
                     123 Main St, City, Country
                   </p>
                 </div>
@@ -224,10 +224,10 @@ function ContactPage() {
                     />
                   </svg>
                   <div>
-                    <h4 className="font-semibold text-gray-800 text-sm md:text-base">
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-100 text-sm md:text-base">
                       Call us
                     </h4>
-                    <p className="text-gray-600 text-xs md:text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm">
                       +1 234 567 8900
                     </p>
                   </div>
@@ -246,10 +246,10 @@ function ContactPage() {
                     <polygon points="3,7 12,13 21,7" />
                   </svg>
                   <div>
-                    <h4 className="font-semibold text-gray-800 text-sm md:text-base">
+                    <h4 className="dark:text-gray-100 font-semibold text-gray-800 text-sm md:text-base">
                       Email
                     </h4>
-                    <p className="text-gray-600 text-xs md:text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm">
                       contact@example.com
                     </p>
                   </div>
