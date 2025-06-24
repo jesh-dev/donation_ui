@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 
 export default function MakeDonation({ onSuccess }) {
   const [amount, setAmount] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleDonate = async (e) => {
     e.preventDefault();
+    if (!email) return setError("Enter a valid email address"); 
     if (!amount || isNaN(amount)) return setError("Enter a valid amount");
     setLoading(true);
     setError("");
@@ -17,6 +19,7 @@ export default function MakeDonation({ onSuccess }) {
       // Simulate successful donation (replace with real API call)
       const fakeResponse = {
         created_at: new Date().toISOString(),
+        email,
         amount,
         method: "Paystack",
         reference: Math.random().toString(36).substring(2, 10)
@@ -24,7 +27,7 @@ export default function MakeDonation({ onSuccess }) {
 
       await new Promise((res) => setTimeout(res, 1000));
       onSuccess && onSuccess(fakeResponse);
-      setAmount("");
+      setAmount(""), setEmail("");
     } catch (err) {
       setError("Payment failed");
     } finally {
@@ -42,6 +45,15 @@ export default function MakeDonation({ onSuccess }) {
       <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Make a Donation</h2>
       <form onSubmit={handleDonate} className="space-y-4">
         <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter Email"
+          className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+        <input
           type="text"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -49,6 +61,7 @@ export default function MakeDonation({ onSuccess }) {
           className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
+
         <button
           type="submit"
           disabled={loading}

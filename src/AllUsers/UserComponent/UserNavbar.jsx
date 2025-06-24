@@ -6,7 +6,7 @@ import { useAuth } from "../../Components/AuthContext";
 
 
 export default function UserNavbar() {
-  // const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);z
     const { user } = useAuth;
   const [loading, setLoading] = useState(true); // for skeleton
 
@@ -34,7 +34,8 @@ export default function UserNavbar() {
       //   console.error("User fetch failed", err);
       //   setLoading(false);
       // });
-  }, []);
+  }
+  , []);
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between shadow-sm">
