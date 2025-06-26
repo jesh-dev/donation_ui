@@ -109,7 +109,7 @@ export default function AuthPage() {
       });
       const verified = response.data.user.email_verified_at;
       if (verified === null) {
-        showMessage("Please verify your email:", response.data.user.message, "error");
+        showMessage("Please verify your email", "error");
       } else {
         if (response.status === 200 && response.data.success) {
           setUser(response.data.user);

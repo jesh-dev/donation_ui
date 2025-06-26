@@ -1,35 +1,43 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../Components/axiosInstance"; // ✅ your configured Axios
 import { motion } from "framer-motion";
+import { useAuth } from "../../Components/AuthContext";
 
 export default function MakeDonation({ onSuccess }) {
-  const [amount, setAmount] = useState("");
   const [email, setEmail] = useState("");
+  const [amount, setAmount] = useState("");
+  const [pledgeAmount, setPledgeAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useAuth(); // ✅ from context
+
+  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
   const handleDonate = async (e) => {
     e.preventDefault();
-    if (!email) return setError("Enter a valid email address"); 
+    if (!validateEmail(email)) return setError("Enter a valid email address");
     if (!amount || isNaN(amount)) return setError("Enter a valid amount");
+    if (!pledgeAmount || isNaN(pledgeAmount)) return setError("Enter a valid pledge amount");
+
     setLoading(true);
     setError("");
 
     try {
-      // Simulate successful donation (replace with real API call)
-      const fakeResponse = {
-        created_at: new Date().toISOString(),
+      const response = await axiosInstance.get("http://127.0.0.1:8000/api/payment/history", {
         email,
         amount,
-        method: "Paystack",
-        reference: Math.random().toString(36).substring(2, 10)
-      };
+        pledge_amount: pledgeAmount,
+      });
 
-      await new Promise((res) => setTimeout(res, 1000));
-      onSuccess && onSuccess(fakeResponse);
-      setAmount(""), setEmail("");
-    } catch (err) {
-      setError("Payment failed");
+      onSuccess && onSuccess(response.data.payment);
+      setEmail("");
+      setAmount("");
+      setPledgeAmount("");
+    } catch (error) {
+      console.error("Payment error:", error);
+      // setError(
+        error?.response?.data?.message || "Something went wrong with the payment."
+      // );
     } finally {
       setLoading(false);
     }
@@ -50,8 +58,7 @@ export default function MakeDonation({ onSuccess }) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter Email"
           className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
-          />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+        />
 
         <input
           type="text"
@@ -60,6 +67,15 @@ export default function MakeDonation({ onSuccess }) {
           placeholder="Enter Amount (₦)"
           className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
         />
+
+        <input
+          type="text"
+          value={pledgeAmount}
+          onChange={(e) => setPledgeAmount(e.target.value)}
+          placeholder="Enter Pledge Amount (₦)"
+          className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+        />
+
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         <button
