@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "./AuthContext";
 import { useMessage } from "./MessageContext";
+// import axios from './axiosInstance';
+// axios.defaults.withCredentials = true;
 
 export default function AuthPage() {
   const {showMessage} = useMessage();
@@ -56,7 +58,7 @@ export default function AuthPage() {
     if (!validateForm()) return;
 
     try {
-      await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
+      // await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
       const response = await axios.post("http://127.0.0.1:8000/api/register", {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
@@ -78,7 +80,7 @@ export default function AuthPage() {
       }
     } catch (error) {
 
-      showMessage(message, "error");
+      showMessage(error.response.data.message, "error");
     }
 
     //  {
@@ -106,14 +108,22 @@ export default function AuthPage() {
     const response = await axios.post("http://127.0.0.1:8000/api/login", {
         email: formData.email.trim(),
         password: formData.password.trim(),
-      });
+      }, {
+        // headers: {
+        //   accept: 'application/json',
+        //   'XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+        // },
+        // withCredentials: true,
+      
+        });
       const verified = response.data.user.email_verified_at;
-      if (verified === null) {
+      if (!verified) {
         showMessage("Please verify your email", "error");
       } else {
-        if (response.status === 200 && response.data.success) {
+        if ( response.data.success) {
           setUser(response.data.user);
           showMessage(response.data.message);
+          console.log(response);
           if (response.data.user.role === "admin") {
             navigate("/admin");
           } else {
@@ -122,7 +132,8 @@ export default function AuthPage() {
         }
       }
     } catch (error) {
-      showMessage(error.response.data.message, "error");
+      // showMessage(error.response.data.message, "error");
+      console.log(error);
     }
   };
 
@@ -131,7 +142,7 @@ export default function AuthPage() {
     if (!validateForm()) return;
 
     try {
-      await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
+      // await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
       const response = await axios.post("http://127.0.0.1:8000/api/verify", {
         email: formData.email.trim(),
         code: code,
@@ -229,6 +240,16 @@ export default function AuthPage() {
                   <p className="text-red-500 text-sm">{errors.password}</p>
                 )}
 
+                <div className="flex justify-between font-[20px] text-gray-500 ">
+                  <div className="flex space-x-2">
+                    <input type="checkbox"/>
+                    <p>Remember me </p>
+                  </div>
+                  <div className="underline hover:text-blue-500 cursor-pointer">
+                    Forgot Password
+                  </div>
+                </div>
+
                 <button
                   type="submit"
                   className="w-full active:scale-[1.05] active:bg-slate-500 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
@@ -236,6 +257,7 @@ export default function AuthPage() {
                   Sign In
                 </button>
               </motion.form>
+
             ) : (
               //  // Sign Up Form
               <motion.form
@@ -391,6 +413,73 @@ export default function AuthPage() {
               </motion.form>
             )}
           </AnimatePresence>
+{/* 
+          <AnimatePresence>
+              <motion.form
+                key="forgotten-password"
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 50, opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                onSubmit={handleforgottenpassword}
+                className="space-y-4"
+              >
+                
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white text-center">
+                  Welcome Back
+                </h2>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+              <div>
+                 <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+                />
+                <button onClick={() => setShowPassword(!showPassword)}
+                  type="button"
+                  className="absolute transition-all duration-300 delay-300 right-12 pt-3 text-blue-500  bottom-21 hover:scale-[1.05] hover:text-blue-800"
+                  >{showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ): (
+                  <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
+
+                <div className="flex justify-between font-[20px] text-gray-500 ">
+                  <div className="flex space-x-2">
+                    <input type="checkbox"/>
+                    <p>Remember me </p>
+                  </div>
+                  <div className="underline hover:text-blue-500 cursor-pointer">
+                    Forgot Password
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full active:scale-[1.05] active:bg-slate-500 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                >
+                  Sign In
+                </button>
+              </motion.form>
+          </AnimatePresence> */}
 
           {/* Verification Modal */}
           <AnimatePresence>

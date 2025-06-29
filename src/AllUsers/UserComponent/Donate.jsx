@@ -2,6 +2,9 @@ import { useState } from "react";
 import axiosInstance from "../../Components/axiosInstance"; // ✅ your configured Axios
 import { motion } from "framer-motion";
 import { useAuth } from "../../Components/AuthContext";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 export default function MakeDonation({ onSuccess }) {
   const [email, setEmail] = useState("");
@@ -23,7 +26,8 @@ export default function MakeDonation({ onSuccess }) {
     setError("");
 
     try {
-      const response = await axiosInstance.get("http://127.0.0.1:8000/api/payment/history", {
+      await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", { withCredentials: true });
+      const response = await axios.get("http://127.0.0.1:8000/api/history", {
         email,
         amount,
         pledge_amount: pledgeAmount,

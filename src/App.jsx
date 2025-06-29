@@ -24,8 +24,8 @@ export default function App() {
        <Route path="/about" element={<AboutPage/>}/>
       <Route path="/contact" element={<ContactPage/>}/>
       <Route path="/register" element={<AuthPage/>}/>
-      <Route path="/logout" element={<Logout/>}/>
       <Route path="/block" element={<Block/>}/>
+      <Route path="/logout" element={<Logout/>}/>
 
       {/* Dashboard Route */}
       <Route path="/dashboard" element={<ProtectedRoute role='user'><DashboardLayout /></ProtectedRoute>}>
@@ -35,7 +35,7 @@ export default function App() {
 </Route>
         
         {/* Admin Dashboard Route */}
-        <Route path="/admin" element={<AdminLayout/>}>
+        <Route path="/admin" element={<ProtectedRoute role='admin'> <AdminLayout/></ProtectedRoute>}>
           <Route index element={<AdminOverview/>}/>
           <Route path="users" element={<AdminUsers/>}/>
           <Route path="payments" element={<AdminPayments/>}/>
