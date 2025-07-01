@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "./AuthContext";
-import { useMessage } from "./MessageContext";
+import { useMessage } from "./MessageContext";  
 
 export default function AuthPage() {
   const { showMessage } = useMessage();
@@ -194,6 +194,8 @@ export default function AuthPage() {
             </button>
           </div>
 
+
+          {/* signIn Form */}
           <AnimatePresence mode="wait">
             {authMode === "signIn" && (
               <motion.form
@@ -209,6 +211,8 @@ export default function AuthPage() {
                   Welcome Back
                 </h2>
                 <input
+                  required
+                  a="true"
                   name="email"
                   type="email"
                   placeholder="Email"
@@ -216,14 +220,26 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                <div className="relative">
+
                 <input
+                  required
+                  a="true"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
-                />
+                  />
+                  <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-2.5 text-blue-500"
+          >
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+                  </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <div className="flex items-center space-x-2">
                     <input type="checkbox" />
@@ -239,14 +255,19 @@ export default function AuthPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                  className="w-full bg-blue-600 active:scale-[1.05] active:bg-slate-600 text-white py-2 rounded hover:bg-blue-700 transition"
                 >
                   Sign In
                 </button>
               </motion.form>
             )}
 
+            
+
+
             {authMode === "signUp" && (
+              
+              // Sign Up Form
               <motion.form
                 key="sign-up"
                 initial={{ x: 50, opacity: 0 }}
@@ -260,6 +281,8 @@ export default function AuthPage() {
                   Create an Account
                 </h2>
                 <input
+                required
+                  a="true"
                   name="firstname"
                   placeholder="First Name"
                   value={formData.firstname}
@@ -267,6 +290,8 @@ export default function AuthPage() {
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
                 <input
+                required
+                  a="true"
                   name="lastname"
                   placeholder="Last Name"
                   value={formData.lastname}
@@ -274,6 +299,8 @@ export default function AuthPage() {
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
                 <input
+                required
+                  a="true"
                   name="email"
                   placeholder="Email"
                   value={formData.email}
@@ -281,6 +308,8 @@ export default function AuthPage() {
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
                 <input
+                required
+                  a="true"
                   name="phone_number"
                   placeholder="Phone"
                   value={formData.phone_number}
@@ -307,32 +336,59 @@ export default function AuthPage() {
                   <option value="branch_1">Mainland Branch</option>
                   <option value="branch_2">Lagos Branch</option>
                 </select>
+                <div className="relative">
+
                 <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
-                />
-                <input
-                  name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+                required
+                a="true"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
                 <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-2.5 text-blue-500"
+            >
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+            </div>
+                <div className="relative">
+
+                <input
+                required
+                a="true"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+                />
+                <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-2.5 text-blue-500"
+          >
+            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+                </div>
+                <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                  className="w-full bg-blue-600 text-white active:scale-[1.05] active:bg-slate-600 py-2 rounded hover:bg-blue-700 transition"
                 >
                   Sign Up
                 </button>
               </motion.form>
             )}
 
+
+
             {authMode === "forgot" && (
+              // Forgot Password Form
               <motion.form
                 key="forgot"
                 initial={{ x: -50, opacity: 0 }}
@@ -346,6 +402,8 @@ export default function AuthPage() {
                   Forgot Password
                 </h2>
                 <input
+                required
+                  a="true"
                   name="forgotEmail"
                   type="email"
                   placeholder="Enter your email"
@@ -355,7 +413,7 @@ export default function AuthPage() {
                 />
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                  className="w-full bg-blue-600 text-white py-2 active:scale-[1.05] active:bg-slate-600 rounded hover:bg-blue-700 transition"
                 >
                   Send Reset Link
                 </button>
@@ -370,6 +428,9 @@ export default function AuthPage() {
             )}
           </AnimatePresence>
 
+
+
+          {/* Verification Modal */}
           <AnimatePresence>
             {showVerification && (
               <motion.div
@@ -406,7 +467,7 @@ export default function AuthPage() {
                   <button
                     onClick={handleVerify}
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                    className="w-full bg-blue-600 active:scale-[1.05] active:bg-slate-600 text-white py-2 rounded  hover:bg-blue-700 transition"
                   >
                     Verify Account
                   </button>
