@@ -14,6 +14,8 @@ import AdminPayments from "./Admin/AdminComponents/adminPayment";
 import Logout from "./Components/Logout";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Block from "./Components/BlockAttack";
+import AdminSettings from "./Admin/AdminComponents/AdminSettings";
+import ResetPassword from "./Components/Reset";
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
       <Route path="/register" element={<AuthPage/>}/>
       <Route path="/block" element={<Block/>}/>
       <Route path="/logout" element={<Logout/>}/>
+      <Route path="/reset" element={<ResetPassword/>}/>
+      
 
       {/* Dashboard Route */}
       <Route path="/dashboard" element={<ProtectedRoute role='user'><DashboardLayout /></ProtectedRoute>}>
@@ -39,6 +43,7 @@ export default function App() {
           <Route index element={<AdminOverview/>}/>
           <Route path="users" element={<AdminUsers/>}/>
           <Route path="payments" element={<AdminPayments/>}/>
+          <Route path="settings" element={<AdminSettings/>}/>
         </Route>
 
     </Routes>

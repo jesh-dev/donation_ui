@@ -31,7 +31,7 @@ export default function MakeDonation({ onSuccess }) {
         email,
         amount,
         pledge_amount: pledgeAmount,
-      });
+      },{withCredentials: true,});
 
       onSuccess && onSuccess(response.data.payment);
       setEmail("");
