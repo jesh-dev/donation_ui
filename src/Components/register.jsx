@@ -73,8 +73,9 @@ export default function AuthPage() {
         email: formData.email.trim(),
         password: formData.password.trim(),
       }, {
-      headers: {
-        Authorization: `Bearer ${token}`,}
+        headers: {
+          Accept: "application/json",
+        },
       });
 
       const verified = response.data.user.email_verified_at;

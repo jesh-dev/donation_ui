@@ -4,7 +4,7 @@ import UserNavbar from "./UserComponent/UserNavbar";
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen dark:bg-slate-600">
+    <div className="min-h-screen dark:bg-black">
       
       <UserSidebar />
 
@@ -12,7 +12,7 @@ export default function DashboardLayout() {
       <div className="flex-1 flex flex-col md:ml-64 bg-gray-50 dark:bg-gray-900">
         <UserNavbar /> 
 
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 dark:bg-black/50 overflow-y-auto p-6">
            <Outlet /> 
         </main>
       </div>

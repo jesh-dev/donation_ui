@@ -1,44 +1,82 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { User, CreditCard, TrendingUp } from "lucide-react";
+import axios from "axios";
+import { useMessage } from "../../Components/MessageContext";
 
-const stats = [
-  {
-    label: "Total Users",
-    value: "1,240",
-    icon: <User size={28} className="text-blue-600" />,
-  },
-  {
-    label: "Total Donations",
-    value: "₦980,000",
-    icon: <CreditCard size={28} className="text-green-600" />,
-  },
-  {
-    label: "Recent Activity",
-    value: "₦25,000",
-    icon: <TrendingUp size={28} className="text-purple-600" />,
-  },
-];
+export default function DonationOverview() {
+  const { showMessage } = useMessage();
 
-export default function DashboardOverview() {
+  const [data, setData] = useState({
+    totalAmount: 0,
+    totalDonors: 0,
+    recent: [],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get("http://127.0.0.1:8000/api/userOverview", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+
+        setData(res.data);
+      } catch (err) {
+        showMessage("Failed to load overview.", "error");
+        console.error(err.response?.data || err.message);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      {stats.map((item, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow flex items-center gap-4"
-        >
-          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-            {item.icon}
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{item.label}</p>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{item.value}</h3>
-          </div>
-        </motion.div>
-      ))}
-    </div>
+    <motion.div
+      className="p-4 md:p-8"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <h2 className="text-2xl font-bold bg-gradient-to-tr from-violet-500 to-green-500 bg-clip-text text-transparent mb-8">Donation Overview</h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-[#1D24CA] dark:bg-[#1D24CA]  rounded-2xl shadow-xl shadow-black p-4">
+          <h3 className="text-lg font-medium text-white dark:text-white">Total Donations</h3>
+          <p className="text-2xl font-bold text-[#B6F500]">₦{data.totalAmount}</p>
+        </div>
+        <div className="bg-[#1D24CA] dark:bg-[#1D24CA]  rounded-2xl shadow-xl shadow-black p-4">
+          <h3 className="text-lg font-medium text-white dark:text-white">Total Donors</h3>
+          <p className="text-2xl font-bold text-[#B6F500]">{data.totalDonors}</p>
+        </div>
+        <div className="bg-[#1D24CA] dark:bg-[#1D24CA]  rounded-2xl shadow-xl shadow-black p-4">
+          <h3 className="text-lg font-medium text-white dark:text-white">Recent Donations</h3>
+          <p className="text-2xl font-bold text-[#B6F500]">{data.recent.length}</p>
+        </div>
+      </div>
+
+      <div className="bg-[#1D24CA] dark:bg-[#1D24CA] rounded-2xl shadow-xl shadow-black p-4">
+        <h3 className="text-xl font-semibold mb-3 text-white">Latest Donations</h3>
+        {Array.isArray(data.recent) && data.recent.length === 0 ? (
+          <p className="text-gray-500">No recent donations yet.</p>
+        ) : (
+          <ul className="space-y-2">
+            {data.recent.map((item, index) => (
+              <li
+                key={index}
+                className="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2"
+              >
+                <span className=" text-[#B6F500] dark:text-white">
+                  {item.name}
+                </span>
+                <span className="text-[#B6F500]">₦{item.amount}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </motion.div>
   );
 }

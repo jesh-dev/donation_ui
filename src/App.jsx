@@ -16,6 +16,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Block from "./Components/BlockAttack";
 import AdminSettings from "./Admin/AdminComponents/AdminSettings";
 import ResetPassword from "./Components/Reset";
+import UserSettings from "./AllUsers/UserComponent/UserSettings";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
   <Route index element={<DashboardOverview />} />
   <Route path="donate" element={<MakeDonation />} />
   <Route path="history" element={<PaymentHistory />} />
+  <Route path="settings" element={<UserSettings />} />
 </Route>
         
         {/* Admin Dashboard Route */}

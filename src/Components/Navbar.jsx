@@ -2,20 +2,22 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Logo from "../assets/Images/logo.png"; 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
+    <header className="bg-blue-500 dark:bg-slate-600 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">ECEF</Link>
+            <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              <img src={Logo} alt="Logo" className="h-12 md:h-14"  /> <h1 className="text-white absolute left-28 max-sm:hidden top-4">ECEF</h1>
+            </Link>
           </div>
 
           {/* Center Nav Links */}
@@ -68,9 +70,9 @@ export default function Navbar() {
                 </button>
               </div>
               <nav className="flex flex-col space-y-10 text-sm">
-                <Link to="/" onClick={closeMenu} className="hover:text-blue-500">Home</Link>
-                <Link to="/about" onClick={closeMenu} className="hover:text-blue-500">About</Link>
-                <Link to="/contact" onClick={closeMenu} className="hover:text-blue-500">Contact</Link>
+                <Link to="/" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">Home</Link>
+                <Link to="/about" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">About</Link>
+                <Link to="/contact" onClick={closeMenu} className="hover:text-blue-500 dark:text-white">Contact</Link>
                 <hr className="my-4 border-gray-300 dark:border-gray-700" />
                 {/* <Link to="/login" onClick={closeMenu} className="text-blue-600 hover:underline">Sign In</Link> */}
                 <Link to="/register" onClick={closeMenu} className="text-white bg-blue-600 active:scale-[1.02] px-4 py-2 rounded hover:bg-blue-700">Sign In/Up</Link>

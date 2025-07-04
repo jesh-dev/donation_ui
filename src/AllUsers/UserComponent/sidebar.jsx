@@ -23,6 +23,7 @@ export default function UserSidebar() {
     { to: "/dashboard", label: "Overview" },
     { to: "/dashboard/donate", label: "Make a Donation" },
     { to: "/dashboard/history", label: "Payment History" },
+    { to: "/dashboard/settings", label: "Settings" },
   ];
 
   return (

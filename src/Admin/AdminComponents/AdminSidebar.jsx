@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { LayoutDashboard, Users, CreditCard, Menu, X, LogOut } from "lucide-react";
-import { useState } from "react";
 
 const links = [
   { to: "/admin", label: "Overview", icon: <LayoutDashboard size={18} /> },
@@ -9,53 +10,71 @@ const links = [
   { to: "/admin/settings", label: "settings", icon: <CreditCard size={18} /> },
 ];
 
-export default function AdminSidebar() {
+export default function UserSidebar() {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleSidebar = () => setOpen(!open);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+      if (window.innerWidth >= 768) setOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   return (
-    <>
-      {/* Mobile Toggle Button */}
-      <div className="md:hidden p-4">
-        <button
-          onClick={toggleSidebar}
-          className="text-gray-700 dark:text-white focus:outline-none"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+    <div className="md:w-64 w-full md:relative z-50">
+      <div className="md:hidden p-4 bg-white dark:bg-gray-900 flex justify-between items-center shadow fixed top-0 left-0 w-full z-50">
+        <h1 className="text-lg font-bold text-blue-600">ECEF</h1>
+        <button onClick={toggleSidebar} className="dark:text-white active:scale-[1.09] active:text-blue-500">
+          {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-md z-50 transform transition-transform duration-300
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:block`}
-      >
-        <div className="h-16 flex items-center justify-center text-xl font-bold text-blue-600 dark:text-white">
-          ECEF Admin
-        </div>
-        <nav className="mt-4 px-4 space-y-2">
-          {links.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`flex items-center gap-3 px-4 py-2 rounded-lg transition hover:bg-gray-100 dark:hover:bg-gray-800
-                ${location.pathname === link.to ? "bg-gray-200 dark:bg-gray-800 text-blue-600" : "text-gray-700 dark:text-gray-300"}`}
-              onClick={() => setIsOpen(false)}
-            >
-              {link.icon}
-              <span>{link.label}</span>
-            </Link>
-          ))}
+      <AnimatePresence>
+        {(open || isDesktop) && (
+          <motion.aside
+            initial={{ x: -250 }}
+            animate={{ x: 0 }}
+            exit={{ x: -250 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 h-screen w-64 bg-white dark:bg-gray-800 p-6 shadow-lg z-40 overflow-hidden"
+          >
+            <div className="md:mt-0 mt-14">
+              <h2 className="text-xl font-bold text-blue-600 mb-6">
+                ECEF Dashboard
+              </h2>
+              <nav className="space-y-4">
+                {links.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`block px-4 py-2 rounded-lg transition hover:bg-blue-100 dark:hover:bg-blue-900 ${
+                      location.pathname === link.to
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-800 dark:text-gray-200"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
 
-          <button className=" absolute md:hidden bottom-5 block left-8 px-4 py-2 rounded-lg transition hover:bg-blue-700 dark:hover:bg-blue-700">
+                <button className=" absolute md:hidden  bottom-5 block left-8 px-4 py-2 rounded-lg transition hover:bg-blue-700 dark:hover:bg-blue-700 dark:text-white">
                   <Link to="/logout">
                     <LogOut size={20} />
                   </Link>
                 </button>
-        </nav>
-      </aside>
-    </>
+              </nav>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
