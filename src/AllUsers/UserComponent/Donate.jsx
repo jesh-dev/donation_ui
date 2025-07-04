@@ -19,6 +19,7 @@ export default function MakeDonation({ onSuccess }) {
     
     if (!user) return setError("You must be logged in to donate.");
     if (!validateEmail(email) && !user.email) return setError("Enter a valid email address.");
+    if (email !== user.email) return setError("Email does not match your account email.");
     if (!amount || isNaN(amount)) return setError("Enter a valid amount.");
     
     setLoading(true);
@@ -27,7 +28,7 @@ export default function MakeDonation({ onSuccess }) {
       const token = localStorage.getItem("token");
       
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/payments",
+        "http://192.168.137.163:8000/api/payments",
         { email, amount },
         {
           headers: {
@@ -36,6 +37,17 @@ export default function MakeDonation({ onSuccess }) {
           },
         }
       );
+      // const response = await axios.post(
+      //   "http://127.0.0.1:8000/api/payments",
+      //   { email, amount },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       Accept: "application/json",
+      //     },
+      //   }
+      // );
+  
 
       if(response.status === 201 && response.data.success) {
         showMessage(response.data.message, 'success')
@@ -66,7 +78,7 @@ export default function MakeDonation({ onSuccess }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter Email"
-          className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+          className="w-full px-4 py-2 border rounded dark:bg-gray-300 dark:text-black"
         />
 
         <input
@@ -74,7 +86,7 @@ export default function MakeDonation({ onSuccess }) {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="Enter Amount (₦)"
-          className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
+          className="w-full px-4 py-2 border rounded dark:bg-gray-300 dark:text-black"
         />
 
         {error && <p className="text-red-500 text-sm">{error}</p>}

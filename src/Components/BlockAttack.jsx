@@ -1,15 +1,3 @@
-
-// export default function Block() {
-//   return (
-//     <div className="flex flex-col justify-center h-screen bg-slate-500">
-//        <div className="text-red-700 self-center font-extrabold text-8xl"><h1>404!</h1></div> 
-        
-//        <div className="self-center"><p>PAGE NOT FOUND!</p></div>
-//        <div><h4>you have nothing to do here, so find your way...</h4>
-// </div>
-//     </div>
-//   )
-// }
 import { motion } from "framer-motion";
 
 export default function Block() {

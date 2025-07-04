@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useAuth } from "../../Components/AuthContext";
+import { BiMoney } from "react-icons/bi";
+import { MailOpenIcon } from "lucide-react";
 
 export default function PaymentHistory() {
   const [history, setHistory] = useState([]);
@@ -18,7 +20,7 @@ export default function PaymentHistory() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/history?page=${page}&per_page=${perPageCount}`,
+        `http://192.168.137.163:8000/api/history?page=${page}&per_page=${perPageCount}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,6 +28,15 @@ export default function PaymentHistory() {
           },
         }
       );
+      // const response = await axios.get(
+      //   `http://127.0.0.1:8000/api/history?page=${page}&per_page=${perPageCount}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       Accept: "application/json",
+      //     },
+      //   }
+      // );
 
       setHistory(response.data.data);
       setCurrentPage(response.data.current_page);
@@ -60,7 +71,7 @@ export default function PaymentHistory() {
     <div className="bg-[#1D24CA] dark:bg-[#1D24CA]  p-6 rounded-lg shadow-xl shadow-black">
       <h2 className="text-2xl font-semibold mb-8 text-gray-100 dark:text-white">Payment History</h2>
 
-      {loading && <p className="text-gray-500">Loading...</p>}
+      {loading && <p className="text-gray-500 animate-pulse">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && history.length === 0 && (
@@ -74,7 +85,7 @@ export default function PaymentHistory() {
               <thead className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                 <tr>
                   <th className="px-4 py-2">Amount</th>
-                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2 ">Email</th>
                   <th className="px-4 py-2">Date</th>
                   <th className="px-4 py-2">History</th>
                 </tr>
@@ -86,14 +97,14 @@ export default function PaymentHistory() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="border-b dark:border-gray-700 hover:bg-gray-900 dark:hover:bg-gray-700"
                   >
-                    <td className="px-4 py-2 text-black dark:text-gray-200">₦{item.amount}</td>
-                    <td className="px-4 py-2 text-black dark:text-gray-200">{item.email}</td>
-                    <td className="px-4 py-2 text-black dark:text-gray-200">
+                    <td className="px-4 py-2 text-white dark:text-gray-200">₦{item.amount}</td>
+                    <td className="px-4 py-2 text-white dark:text-gray-200">{item.email}</td>
+                    <td className="px-4 py-2 text-white dark:text-gray-200">
                       {new Date(item.created_at).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-2 text-black dark:text-gray-200">
+                    <td className="px-4 py-2 text-white dark:text-gray-200">
                       {item.payment_history.length} records
                     </td>
                   </motion.tr>

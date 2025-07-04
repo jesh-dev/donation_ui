@@ -1,20 +1,25 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Settings, User, LogOut, Bell, Sun, Moon } from "lucide-react";
+import { Settings, User, LogOut, Bell, Sun, Moon, X, MarsStrokeIcon, ShieldCheck, MailOpen, PersonStanding, PhoneIncoming, MapPin } from "lucide-react";
 import axios from "axios";
 import { useMessage } from "../../Components/MessageContext";
+import { useAuth } from "../../Components/AuthContext";
 
 export default function UserSettings() {
-    const { showMessage } = useMessage();
+  const { showMessage } = useMessage();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
-
   const [visible, setVisible] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark" ||
-      (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ? true
-      : false;
-  });
+
+    const [darkMode, setDarkMode] = useState(() =>
+    localStorage.getItem('theme') === 'dark'
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
   const scrollTimeout = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -24,13 +29,13 @@ export default function UserSettings() {
     email: "",
   });
 
-
-
   const [passwordData, setPasswordData] = useState({
     current_password: "",
     new_password: "",
     confirm_password: ""
   });
+
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,7 +50,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://127.0.0.1:8000/api/user/settings",
+        "http://192.168.137.163:8000/api/user/settings",
         formData,
         {
           headers: {
@@ -53,7 +58,16 @@ export default function UserSettings() {
           },
         }
       );
-        showMessage(response.data.message, "success");
+      // const response = await axios.put(
+      //   "http://127.0.0.1:8000/api/user/settings",
+      //   formData,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      showMessage(response.data.message, "success");
     } catch (error) {
       showMessage(error.response.data.message, "error");
     }
@@ -64,7 +78,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://127.0.0.1:8000/api/user/password",
+        "http://192.168.137.163:8000/api/user/password",
         passwordData,
         {
           headers: {
@@ -78,10 +92,6 @@ export default function UserSettings() {
     }
   };
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDarkMode);
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
 
   useEffect(() => {
     let lastScrollTop = 0;
@@ -225,20 +235,28 @@ export default function UserSettings() {
                 <label className="block">
                   <span className="text-gray-700 dark:text-white">Email</span>
                   <input
-                    value={formData.email}
+                    value={formData.email || 'Coming soon'}
                     disabled
                     className="w-full mt-1 p-2 rounded bg-gray-100 dark:bg-gray-700"
                     type="email"
                   />
                 </label>
-                <button
-                  type="submit"
-                  className="px-4 py-2 active:scale-[1.02] active:bg-slate-600 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  Update Settings
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 active:scale-[1.02] active:bg-slate-600 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  >
+                    Update Settings
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowProfileModal(true)}
+                    className="px-4 py-2 active:scale-[1.02] active:bg-slate-600 bg-gray-800 text-white rounded hover:bg-gray-700"
+                  >
+                    View Profile
+                  </button>
+                </div>
               </form>
-
             )}
 
             {activeTab === "security" && (
@@ -300,10 +318,10 @@ export default function UserSettings() {
                 <label className="flex items-center justify-between">
                   <span className="text-gray-700 dark:text-white">Dark Mode</span>
                   <button
-                    onClick={() => setIsDarkMode(!isDarkMode)}
-                    className="p-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    onClick={() => setDarkMode(!darkMode)}
+                    className="p-2 rounded bg-blue-600 active:animate-ping dark:bg- hover:bg-blue-900 dark:hover:bg-gray-600"
                   >
-                    {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    {darkMode ? <Sun className="w-5 h-5 text-yellow-400 animate-wiggle"   /> : <Moon className="w-5 h-5 animate-wiggle text-gray-200 " />}
                   </button>
                 </label>
                 <label className="block">
@@ -320,6 +338,62 @@ export default function UserSettings() {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      {/* Profile Modal */}
+      <AnimatePresence>
+        {showProfileModal && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-transparent backdrop-blur-md bg-opacity-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowProfileModal(false)}
+          >
+            <motion.div
+              className=" dark:bg-transparent backdrop-blur-lg bg-transparent p-6 rounded-lg w-full max-w-md relative"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-red-500"
+                onClick={() => setShowProfileModal(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h3 className="text-2xl font-bold mb-4 dark:text-white">Profile Overview</h3>
+              <div className="flex">
+                <div><PersonStanding className="w-5 h-5 mr-2 text-blue-500" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className="text-[15px]"></strong> {user.firstname} {user.lastname}</p>
+
+              </div>
+              <div className="flex">
+                <div><MailOpen className="w-5 h-5 mr-2 text-blue-500" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className=""></strong> {user.email}</p>
+              </div>
+
+              <div className="flex">
+                <div><PhoneIncoming className="w-5 h-5 mr-2 text-green-500" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className="text-[15px]"></strong> {user.phone_number}</p>
+              </div>
+
+              <div className="flex">
+                <div><MapPin className="w-5 h-5 mr-2 text-red-600" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className="text-[15px]"></strong> {user.province}</p>
+              </div>
+              <div className="flex">
+                <div><MapPin className="w-5 h-5 mr-2 text-red-600" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className="text-[15px]"></strong> {user.branch}</p>
+              </div>
+              <div className="flex">
+                <div><ShieldCheck className="w-5 h-5 mr-2 text-green-500" /></div>
+                <p className="text-sm dark:text-white pb-3"><strong className="text-[15px]">Verified</strong></p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

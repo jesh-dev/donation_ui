@@ -91,11 +91,11 @@ export default function AdminSettings() {
     );
 
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-6">
+    <div className="max-w-2xl mx-auto p-4 bg-[#1D24CA] rounded-xl shadow-xl shadow-black space-y-6">
       {/* Title */}
       <div className="flex items-center gap-2 text-2xl font-bold">
-        <Settings className="w-6 h-6 text-blue-600" />
-        Admin Settings
+        <Settings className="w-6 h-6 text-white dark:text-blue-600" />
+        <span className="dark:text-white text-white"> Admin Settings</span>
       </div>
 
       {/* Tabs */}
@@ -127,7 +127,7 @@ export default function AdminSettings() {
             className="space-y-6"
           >
             <div className="space-y-2">
-              <label className="flex items-center gap-2 font-medium text-sm">
+              <label className="flex dark:text-white items-center gap-2 text-white font-medium text-sm">
                 <ShieldCheck className="w-4 h-4" />
                 Site Name
               </label>
@@ -140,7 +140,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="flex items-center justify-between mt-4">
-              <div className="flex items-center gap-2 font-medium text-sm">
+              <div className="flex items-center gap-2 text-white dark:text-white font-medium text-sm">
                 <UserCog className="w-4 h-4" />
                 Registration Open
               </div>
@@ -159,7 +159,7 @@ export default function AdminSettings() {
             <button
               onClick={handleUpdateGeneral}
               disabled={saving}
-              className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+              className="w-full mt-6 flex active:scale-[1.02] active:bg-slate-600 items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
             >
               {saving ? (
                 <>
@@ -182,15 +182,15 @@ export default function AdminSettings() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.3 }}
-            className="space-y-4"
+            className="space-y-4 "
           >
             <div className="flex items-center gap-2 text-lg font-medium">
               <Lock className="w-5 h-5 text-red-500" />
-              Change Password
+              <span className="dark:text-white text-white">Change Password</span>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Old Password</label>
+              <label className="text-sm font-medium dark:text-white text-white">Old Password</label>
               <input
                 type="password"
                 value={oldPassword}
@@ -200,7 +200,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">New Password</label>
+              <label className="text-sm font-medium dark:text-white text-white">New Password</label>
               <input
                 type="password"
                 value={newPassword}
@@ -210,7 +210,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Confirm Password</label>
+              <label className="text-sm font-medium dark:text-white text-white">Confirm Password</label>
               <input
                 type="password"
                 value={confirmPassword}
@@ -221,7 +221,7 @@ export default function AdminSettings() {
 
             <button
               onClick={handlePasswordChange}
-              className="w-full mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+              className="w-full mt-4 px-4 py-2 active:scale-[1.02] active:bg-slate-600 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
             >
               Update Password
             </button>
@@ -240,7 +240,7 @@ export default function AdminSettings() {
           >
             <div className="flex items-center gap-2 text-lg font-medium">
               <ImageIcon className="w-5 h-5 text-green-500" />
-              Upload Logo
+             <span className="dark:text-white text-white"> Upload Logo</span>
             </div>
 
             <input
@@ -262,7 +262,7 @@ export default function AdminSettings() {
 
             <button
               onClick={handleSaveLogo}
-              className="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+              className="w-full mt-4 px-4 py-2 active:scale-[1.02] active:bg-slate-600 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
             >
               Save Logo
             </button>

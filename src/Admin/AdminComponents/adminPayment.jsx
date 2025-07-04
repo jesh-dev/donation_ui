@@ -16,7 +16,7 @@ export default function AdminPayments() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/admin/history?page=${page}&per_page=${perPage}`,
+        `http://192.168.137.163:8000/api/admin/history?page=${page}&per_page=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,13 +24,22 @@ export default function AdminPayments() {
           },
         }
       );
+      // const response = await axios.get(
+      //   `http://127.0.0.1:8000/api/admin/history?page=${page}&per_page=${perPage}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       Accept: "application/json",
+      //     },
+      //   }
+      // );
 
       setPayments(response.data.data);
       setCurrentPage(response.data.current_page);
       setLastPage(response.data.last_page);
     } catch (err) {
       console.error(err.response?.data || err.message);
-      setError("Failed to fetch payments.");
+      setError("Failed to fetch payments...");
     } finally {
       setLoading(false);
     }
@@ -47,8 +56,8 @@ export default function AdminPayments() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
-      <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">All Payments</h2>
+    <div className="bg-[#1D24CA] dark:bg-gray-800 p-6 rounded-xl shadow-xl backdrop-blur-lg shadow-black">
+      <h2 className="text-xl font-bold text-white dark:text-white mb-10">All Payments</h2>
 
       {loading && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -66,8 +75,8 @@ export default function AdminPayments() {
           <tbody>
             {payments.length === 0 ? (
               <tr>
-                <td colSpan="4" className="text-center py-4 text-gray-500">
-                  No payments found.
+                <td colSpan="4" className="text-center py-4 text-gray-200">
+                  No payments found...
                 </td>
               </tr>
             ) : (
@@ -77,20 +86,20 @@ export default function AdminPayments() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  className="border-b dark:border-gray-700 hover:bg-gray-900 dark:hover:bg-gray-700"
                 >
-                  <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-2 text-white dark:text-gray-200">
                     {pay.user
                       ? `${pay.user.firstname} ${pay.user.lastname}`
                       : "Anonymous"}
                   </td>
-                  <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-2 text-white dark:text-gray-200">
                     ₦{Number(pay.amount).toLocaleString()}
                   </td>
                   <td className="px-4 py-2 text-blue-600 dark:text-blue-400">
                     {pay.reference}
                   </td>
-                  <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
+                  <td className="px-4 py-2 text-gray-100 dark:text-gray-200">
                     {new Date(pay.created_at).toLocaleDateString()}
                   </td>
                 </motion.tr>
@@ -103,7 +112,7 @@ export default function AdminPayments() {
       {/* Pagination Controls */}
       <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <label className="mr-2 text-sm text-gray-600 dark:text-gray-300">Per Page:</label>
+          <label className="mr-2 text-sm text-white dark:text-gray-300"> View:</label>
           <select
             value={perPage}
             onChange={(e) => {
@@ -122,7 +131,7 @@ export default function AdminPayments() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded disabled:opacity-50"
+            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded hover:text-[#1D24CA] disabled:opacity-50"
           >
             Prev
           </button>

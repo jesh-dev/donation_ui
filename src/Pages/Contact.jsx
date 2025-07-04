@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import { useMessage } from "../Components/MessageContext";
+import { MailCheck, MapPinCheckIcon, PhoneIncoming } from "lucide-react";
 
 function ContactPage() {
   const { showMessage } = useMessage("");
@@ -64,6 +65,7 @@ function ContactPage() {
       <Navbar />
       <div className=" bg-white dark:bg-slate-800 flex justify-center align-center p-4">
         {/* Container card */}
+        <div><img src="" alt="" srcset="" /></div>
         <div className="bg-white mt-20 mb-20 dark:bg-slate-600 rounded-lg shadow-xl max-w-4xl w-full p-6 md:p-8 sm:p-4">
           <h2 className="text-3xl dark:text-white font-bold text-gray-800 text-center mb-4">
             Get in Touch
@@ -166,7 +168,7 @@ function ContactPage() {
             <div className="md:col-span-2 flex justify-center mt-4 w-full">
               <button
                 type="submit"
-                className="w-full sm:w-auto active:scale-[1.05] active:bg-slate-500 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition duration-300"
+                className="w-full sm:w-auto active:animate-ping active:bg-green-500 px-8 py-3 bg-blue-600 hover:bg-blue-700 hover:animate-pulse text-white font-semibold rounded-lg shadow-lg transition duration-300"
               >
                 Send Message
               </button>
@@ -181,20 +183,7 @@ function ContactPage() {
               <div className="flex items-start space-x-4">
                 <div className="text-blue-600 flex-shrink-0">
                   {/* Location icon */}
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 10c0 5-7 13-9 13S3 15 3 10s4-7 9-7 9 2 9 7z"
-                    />
-                    <circle cx={12} cy={10} r={3} />
-                  </svg>
+                  <MapPinCheckIcon className="w-6 h-6 animate-pulse text-red-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold dark:text-gray-200 text-gray-800 text-sm md:text-base">
@@ -210,19 +199,7 @@ function ContactPage() {
                 {/* Phone */}
                 <div className="flex items-center  space-x-4">
                   {/* Phone icon */}
-                  <svg
-                    className="w-6 h-6 text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 5h2l3 7v4l-3 7H3l3-7V12l-3-7z"
-                    />
-                  </svg>
+                  <PhoneIncoming className="w-6 h-6 animate-wiggle text-green-500" />
                   <div>
                     <h4 className="font-semibold text-gray-800 dark:text-gray-100 text-sm md:text-base">
                       Call us
@@ -235,16 +212,7 @@ function ContactPage() {
                 {/* Email */}
                 <div className="flex items-center space-x-4">
                   {/* Email icon */}
-                  <svg
-                    className="w-6 h-6 text-red-500"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                  >
-                    <rect x={3} y={5} width={18} height={14} rx={2} ry={2} />
-                    <polygon points="3,7 12,13 21,7" />
-                  </svg>
+                 <MailCheck className="w-6 h-6 text-yellow-500 animate-bounce" />
                   <div>
                     <h4 className="dark:text-gray-100 font-semibold text-gray-800 text-sm md:text-base">
                       Email

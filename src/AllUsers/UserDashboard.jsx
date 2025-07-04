@@ -5,7 +5,7 @@ import UserNavbar from "./UserComponent/UserNavbar";
 export default function DashboardLayout() {
   return (
     <div className="min-h-screen dark:bg-black">
-      
+
       <UserSidebar />
 
       {/* Main content */}

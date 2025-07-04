@@ -8,6 +8,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "./AuthContext";
 import { useMessage } from "./MessageContext";  
 
+axios.defaults.baseURL = "http://192.168.137.163:8000";
+
 export default function AuthPage() {
   const { showMessage } = useMessage();
   const [authMode, setAuthMode] = useState("signIn"); // signIn, signUp, forgot
@@ -69,7 +71,7 @@ export default function AuthPage() {
       //   withCredentials: true,
       // });
       const token = localStorage.getItem("token");
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+      const response = await axios.post("http://192.168.137.163:8000/api/login", {
         email: formData.email.trim(),
         password: formData.password.trim(),
       }, {
@@ -102,7 +104,7 @@ export default function AuthPage() {
     if (!validateForm()) return;
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register", {
+      const response = await axios.post("http://192.168.137.163:8000/api/register", {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
         email: formData.email.trim(),
@@ -127,7 +129,7 @@ export default function AuthPage() {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/verify", {
+      const response = await axios.post("http://192.168.137.163:8000/api/verify", {
         email: formData.email.trim(),
         code: code,
       });
@@ -152,7 +154,7 @@ export default function AuthPage() {
     }
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/forgot",
+        "http://192.168.137.163:8000/api/forgot",
         {
           email: forgotEmail.trim(),
         }

@@ -16,12 +16,18 @@ const { showMessage } = useMessage();
 
   const fetchUsers = (page = 1) => {
     setLoading(true);
-    axios.get(`http://127.0.0.1:8000/api/admin/users?page=${page}`, {
+    axios.get(`http://192.168.137.163:8000/api/admin/users?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
       },
     })
+    // axios.get(`http://127.0.0.1:8000/api/admin/users?page=${page}`, {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     Accept: "application/json",
+    //   },
+    // })
       .then((res) => {
         setUsers(res.data.data);
         setPagination({
@@ -109,8 +115,8 @@ const { showMessage } = useMessage();
   );
 
   return (
-    <div className="p-4 overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-4 dark:text-white">All Users</h2>
+    <div className="p-4 overflow-x-auto shadow-xl rounded-xl shadow-black bg-[#1D24CA]">
+      <h2 className="text-2xl font-bold mb-10 text-white dark:text-white">All Users</h2>
 
       <table className="min-w-full border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
         <thead className="bg-gray-100 dark:bg-gray-800 text-left text-sm text-gray-600 dark:text-gray-300">
@@ -129,7 +135,7 @@ const { showMessage } = useMessage();
           {users.map(user => (
             <motion.tr
               key={user.id}
-              className="hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="hover:bg-gray-900 text-white dark:hover:bg-gray-700"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
@@ -206,7 +212,7 @@ const { showMessage } = useMessage();
 
       {/* Edit Modal */}
       {editingUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-transparent backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50">
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -248,13 +254,13 @@ const { showMessage } = useMessage();
                 <button
                   type="button"
                   onClick={() => setEditingUser(null)}
-                  className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded"
+                  className="px-4 py-2 bg-gray-200 active:scale-[1.02] active:bg-slate-600 dark:bg-gray-600 rounded"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded"
+                  className="px-4 py-2 bg-blue-600 active:scale-[1.02] active:bg-slate-600 text-white rounded"
                 >
                   Update
                 </button>
