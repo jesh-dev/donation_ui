@@ -33,7 +33,7 @@ export default function StatsSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.7 }}
-      className="bg-white dark:bg-gray-900 py-16 px-6 text-center"
+      className="bg-white dark:bg-black/90 py-16 px-6 text-center"
     >
       <h2 className="text-2xl md:text-3xl font-bold mb-10 text-gray-800 dark:text-white">
         Our Impact in Numbers

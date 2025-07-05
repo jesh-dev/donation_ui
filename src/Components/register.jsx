@@ -172,7 +172,7 @@ export default function AuthPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8 dark:bg-gray-900 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8 dark:bg-black px-4">
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md relative">
           <div className="flex justify-between mb-6">
             <button

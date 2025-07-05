@@ -1,9 +1,11 @@
 import UserSidebar from "./UserComponent/sidebar";
 import { Outlet } from "react-router-dom";
 import UserNavbar from "./UserComponent/UserNavbar";
+import DashboardFooter from "./UserComponent/userFooter";
 
 export default function DashboardLayout() {
   return (
+    <>
     <div className="min-h-screen dark:bg-black">
 
       <UserSidebar />
@@ -17,5 +19,7 @@ export default function DashboardLayout() {
         </main>
       </div>
     </div>
+    <DashboardFooter/>
+    </>
   );
 }
