@@ -34,7 +34,7 @@ const [email, setEmail] = useState(emailFromUrl);
     if (!validate()) return;
 
     try {
-      const response = await axios.post("http://192.168.137.163:8000/api/reset", {
+      const response = await axios.post("http://127.0.0.1:8000/api/reset", {
         email,
         token,
         password,

@@ -35,7 +35,7 @@ export default function DonationOverview() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get(`http://192.168.137.163:8000/api/admin/overview?filter=${filter}`, {
+        const res = await axios.get(`http://127.0.0.1:8000/api/admin/overview?filter=${filter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -59,8 +59,8 @@ export default function DonationOverview() {
   }, [filter]);
 
   const exportCSV = () => {
-    const headers = ["Name", "Amount", "Date"];
-    const rows = data.latest.map(item => [item.name, item.amount, item.date]);
+    const headers = ["Email", "Amount", "Date"];
+    const rows = data.latest.map(item => [item.email, item.amount, item.date]);
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
@@ -144,7 +144,7 @@ export default function DonationOverview() {
                     key={index}
                     className="min-w-[200px] flex flex-col bg-[#2C34D2] rounded-lg p-4 text-white shadow-md"
                   >
-                    <span className="text-[#B6F500] font-medium">{item.name}</span>
+                    <span className="text-[#B6F500] font-medium">{item.email}</span>
                     <span className="text-[#B6F500] font-semibold">₦{item.amount}</span>
                     <span className="text-xs text-gray-300 mt-1">{item.date}</span>
                   </li>

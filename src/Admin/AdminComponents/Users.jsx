@@ -16,18 +16,12 @@ const { showMessage } = useMessage();
 
   const fetchUsers = (page = 1) => {
     setLoading(true);
-    axios.get(`http://192.168.137.163:8000/api/admin/users?page=${page}`, {
+    axios.get(`http://127.0.0.1:8000/api/admin/users?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
       },
     })
-    // axios.get(`http://127.0.0.1:8000/api/admin/users?page=${page}`, {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     Accept: "application/json",
-    //   },
-    // })
       .then((res) => {
         setUsers(res.data.data);
         setPagination({
@@ -121,7 +115,7 @@ const { showMessage } = useMessage();
       <table className="min-w-full border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
         <thead className="bg-gray-100 dark:bg-gray-800 text-left text-sm text-gray-600 dark:text-gray-300">
           <tr>
-            <th className="p-3">Name</th>
+            {/* <th className="p-3">Name</th> */}
             <th className="p-3">Email</th>
             <th className="p-3">Tel</th>
             <th className="p-3">Province</th>
@@ -140,7 +134,7 @@ const { showMessage } = useMessage();
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <td className="p-3 dark:text-white">{user.firstname} {user.lastname}</td>
+              {/* <td className="p-3 dark:text-white">{user.firstname} {user.lastname}</td> */}
               <td className="p-3 dark:text-white">{user.email}</td>
               <td className="p-3 dark:text-white">{user.phone_number}</td>
               <td className="p-3 dark:text-white">{user.province || '-'}</td>

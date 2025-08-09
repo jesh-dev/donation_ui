@@ -34,6 +34,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
   return (
     <motion.header
       initial={{ y: -80 }}
@@ -58,9 +59,9 @@ export default function Navbar() {
                 alt="Logo"
                 className="h-12 motion-reduce:animate-spin hover:animate-none transition md:h-14"
               />
-              <h1 className="text-white absolute left-28 max-sm:hidden xl:hidden top-4">
+              {/* <h1 className="text-white absolute left-28 max-sm:hidden xl:hidden top-4">
                 ECEF
-              </h1>
+              </h1> */}
             </Link>
           </div>
 
@@ -100,7 +101,7 @@ export default function Navbar() {
             </button>
             <Link
               to="/register"
-              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 hover:animate-bounce active:animate-ping transition"
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 hover:animate-pulse active:animate-ping transition"
             >
               Sign In/Up
             </Link>

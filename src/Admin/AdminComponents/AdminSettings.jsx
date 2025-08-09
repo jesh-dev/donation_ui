@@ -9,8 +9,8 @@ import {
   Lock,
   ImageIcon,
 } from "lucide-react";
-import toast from "react-hot-toast";
-// import axios from "@/api/axios";
+import axios from "../../Components/axiosInstance"; // ✅ make sure axios is configured with auth headers
+import { useMessage } from "../../Components/MessageContext"; // ✅ make sure this is your toast notification function
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState("general");
@@ -19,8 +19,8 @@ export default function AdminSettings() {
   const [registrationOpen, setRegistrationOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
-  // Security
+   const {showMessage} = useMessage(); // ✅ make sure this is your toast notification function
+  // Security (still dummy for now)
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -29,58 +29,82 @@ export default function AdminSettings() {
   const [logoPreview, setLogoPreview] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
 
+  // ✅ Fetch settings on mount
   useEffect(() => {
-    setTimeout(() => {
-      setSiteName("Esocs Centenary");
-      setRegistrationOpen(true);
-      setLoading(false);
-    }, 800);
-
-    // Example axios
-    // axios.get("/api/admin/settings").then(res => ...)
+    axios
+      .get("http://127.0.0.1:8000/api/admin/settings")
+      .then((res) => {
+        setSiteName(res.data.site_name || "");
+        setRegistrationOpen(res.data.registration_open ?? true);
+        if (res.data.logo_path) {
+          setLogoPreview(import.meta.env.VITE_BACKEND_URL + res.data.logo_path.replace("private/public", "/storage"));
+        }
+        setLoading(false);
+        showMessage("Settings loaded successfully!");
+      })
+      .catch((err) => {
+        console.error(err);
+        showMessage("Failed to load settings");
+        setLoading(false);
+      });
   }, []);
 
-  const handleUpdateGeneral = () => {
+  // ✅ Save general settings
+  const handleUpdateGeneral = async () => {
     setSaving(true);
-    setTimeout(() => {
-      toast.success("General settings saved!");
+    try {
+      await axios.post("/admin/settings/general", {
+        site_name: siteName,
+        registration_open: registrationOpen,
+      });
+      showMessage("General settings saved!");
+    } catch (err) {
+      console.error(err);
+      showMessage("Failed to save settings.");
+    } finally {
       setSaving(false);
-    }, 1000);
+    }
   };
 
   const handlePasswordChange = () => {
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.");
+      showMessage("Passwords do not match.");
       return;
     }
-
-    toast.success("Password updated (dummy)");
+    // Optional: Implement backend password update later
+    showMessage("Password updated (dummy)");
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
   };
 
+  // ✅ Handle logo upload
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
   };
 
-  const handleSaveLogo = () => {
+  const handleSaveLogo = async () => {
     if (!logoFile) {
-      toast.error("Please select a logo first.");
+      showMessage("Please select a logo first.");
       return;
     }
 
-    toast.success("Logo saved (dummy)");
-    // Real API example:
-    /*
     const formData = new FormData();
     formData.append("logo", logoFile);
-    await axios.post("/api/admin/logo", formData);
-    */
+
+    try {
+      const res = await axios.post("/admin/settings/logo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setLogoPreview(import.meta.env.VITE_BACKEND_URL + res.data.logo_url.replace("public", "/storage"));
+      showMessage("Logo updated successfully!");
+    } catch (err) {
+      console.error(err);
+      showMessage("Logo upload failed.");
+    }
   };
 
   if (loading)
@@ -94,8 +118,8 @@ export default function AdminSettings() {
     <div className="max-w-2xl mx-auto p-4 bg-[#1D24CA] rounded-xl shadow-xl shadow-black space-y-6">
       {/* Title */}
       <div className="flex items-center gap-2 text-2xl font-bold">
-        <Settings className="w-6 h-6 text-white dark:text-blue-600" />
-        <span className="dark:text-white text-white"> Admin Settings</span>
+        <Settings className="w-6 h-6 text-white" />
+        <span className="text-white">Admin Settings</span>
       </div>
 
       {/* Tabs */}
@@ -107,7 +131,7 @@ export default function AdminSettings() {
             className={`pb-2 font-medium capitalize ${
               activeTab === tab
                 ? "border-b-2 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-blue-500"
+                : "text-gray-300 hover:text-blue-400"
             }`}
           >
             {tab}
@@ -116,7 +140,6 @@ export default function AdminSettings() {
       </div>
 
       <AnimatePresence mode="wait">
-        {/* General Tab */}
         {activeTab === "general" && (
           <motion.div
             key="general"
@@ -127,7 +150,7 @@ export default function AdminSettings() {
             className="space-y-6"
           >
             <div className="space-y-2">
-              <label className="flex dark:text-white items-center gap-2 text-white font-medium text-sm">
+              <label className="flex text-white items-center gap-2 font-medium text-sm">
                 <ShieldCheck className="w-4 h-4" />
                 Site Name
               </label>
@@ -140,7 +163,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="flex items-center justify-between mt-4">
-              <div className="flex items-center gap-2 text-white dark:text-white font-medium text-sm">
+              <div className="flex items-center gap-2 text-white font-medium text-sm">
                 <UserCog className="w-4 h-4" />
                 Registration Open
               </div>
@@ -174,7 +197,6 @@ export default function AdminSettings() {
           </motion.div>
         )}
 
-        {/* Security Tab */}
         {activeTab === "security" && (
           <motion.div
             key="security"
@@ -182,15 +204,15 @@ export default function AdminSettings() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.3 }}
-            className="space-y-4 "
+            className="space-y-4"
           >
-            <div className="flex items-center gap-2 text-lg font-medium">
+            <div className="flex items-center gap-2 text-lg font-medium text-white">
               <Lock className="w-5 h-5 text-red-500" />
-              <span className="dark:text-white text-white">Change Password</span>
+              Change Password
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium dark:text-white text-white">Old Password</label>
+              <label className="text-sm font-medium text-white">Old Password</label>
               <input
                 type="password"
                 value={oldPassword}
@@ -200,7 +222,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium dark:text-white text-white">New Password</label>
+              <label className="text-sm font-medium text-white">New Password</label>
               <input
                 type="password"
                 value={newPassword}
@@ -210,7 +232,7 @@ export default function AdminSettings() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium dark:text-white text-white">Confirm Password</label>
+              <label className="text-sm font-medium text-white">Confirm Password</label>
               <input
                 type="password"
                 value={confirmPassword}
@@ -228,7 +250,6 @@ export default function AdminSettings() {
           </motion.div>
         )}
 
-        {/* Logo Tab */}
         {activeTab === "logo" && (
           <motion.div
             key="logo"
@@ -238,9 +259,9 @@ export default function AdminSettings() {
             transition={{ duration: 0.3 }}
             className="space-y-6"
           >
-            <div className="flex items-center gap-2 text-lg font-medium">
+            <div className="flex items-center gap-2 text-lg font-medium text-white">
               <ImageIcon className="w-5 h-5 text-green-500" />
-             <span className="dark:text-white text-white"> Upload Logo</span>
+              Upload Logo
             </div>
 
             <input

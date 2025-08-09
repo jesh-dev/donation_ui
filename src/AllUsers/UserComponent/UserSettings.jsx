@@ -50,7 +50,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://192.168.137.163:8000/api/user/settings",
+        "http://127.0.0.0.1:8000/api/user/settings",
         formData,
         {
           headers: {
@@ -78,7 +78,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://192.168.137.163:8000/api/user/password",
+        "http://127.0.0.1:8000/api/user/password",
         passwordData,
         {
           headers: {

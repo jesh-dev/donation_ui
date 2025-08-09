@@ -20,7 +20,7 @@ export default function PaymentHistory() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://192.168.137.163:8000/api/history?page=${page}&per_page=${perPageCount}`,
+        `http://127.0.0.1:8000/api/history?page=${page}&per_page=${perPageCount}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function PaymentHistory() {
                   <th className="px-4 py-2">Amount</th>
                   <th className="px-4 py-2 ">Email</th>
                   <th className="px-4 py-2">Date</th>
-                  <th className="px-4 py-2">History</th>
+                  <th className="px-4 py-2">Reference</th>
                 </tr>
               </thead>
               <tbody>
@@ -105,7 +105,7 @@ export default function PaymentHistory() {
                       {new Date(item.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-2 text-white dark:text-gray-200">
-                      {item.payment_history.length} records
+                      {item.reference}
                     </td>
                   </motion.tr>
                 ))}

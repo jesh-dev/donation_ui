@@ -6,13 +6,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "./AuthContext";
-import { useMessage } from "./MessageContext";  
-
-axios.defaults.baseURL = "http://192.168.137.163:8000";
+import { useMessage } from "./MessageContext";
 
 export default function AuthPage() {
   const { showMessage } = useMessage();
-  const [authMode, setAuthMode] = useState("signIn"); // signIn, signUp, forgot
+  const [authMode, setAuthMode] = useState("signIn");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,35 +23,39 @@ export default function AuthPage() {
     province: "",
     branch: "",
   });
+
   const [forgotEmail, setForgotEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [showVerification, setShowVerification] = useState(false);
   const [code, setCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { setUser, setToken } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const emailLock = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const phoneLock = /^((\+234)[789][01]\d{8}|0[789][01]\d{8})$/;
+  const passwordLock = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.firstname.trim())
-      newErrors.firstname = "Firstname is required";
+    if (!formData.firstname.trim()) newErrors.firstname = "Firstname is required";
     if (!formData.lastname.trim()) newErrors.lastname = "Lastname is required";
-    if (!formData.email.trim()) newErrors.email = "Valid email is required";
-    if (!formData.phone_number.trim())
-      newErrors.phone_number = "Phone Number is required";
+    if (!formData.email.trim() || !emailLock.test(formData.email)) newErrors.email = "Valid email is required";
+    if (!formData.phone_number.trim() || !phoneLock.test(formData.phone_number)) newErrors.phone_number = "Phone Number is required";
     if (!formData.province.trim()) newErrors.province = "Province is required";
     if (!formData.branch.trim()) newErrors.branch = "Branch is required";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.password.trim() || !passwordLock.test(formData.password)) newErrors.password = "Password must be at least 8+ characters, contain at least 1 uppercase, lower, number and 1 special character";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-  const { setUser, setToken } = useAuth();
 
   const validateLoginForm = () => {
     const newErrors = {};
@@ -66,12 +68,9 @@ export default function AuthPage() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     if (!validateLoginForm()) return;
+    setIsLoading(true);
     try {
-      // await axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", {
-      //   withCredentials: true,
-      // });
-      const token = localStorage.getItem("token");
-      const response = await axios.post("http://192.168.137.163:8000/api/login", {
+      const response = await axios.post("http://localhost:8000/api/login", {
         email: formData.email.trim(),
         password: formData.password.trim(),
       }, {
@@ -85,26 +84,23 @@ export default function AuthPage() {
         showMessage("Please verify your email", "error");
       } else if (response.data.success) {
         setUser(response.data.user);
-        setToken(response.data.token)
-        console.log(response);
+        setToken(response.data.token);
         showMessage(response.data.message);
-        if (response.data.user.role === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/dashboard");
-        }
+        navigate(response.data.user.role === "admin" ? "/admin" : "/dashboard");
       }
     } catch (error) {
       showMessage("Login failed", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+    setIsLoading(true);
     try {
-      const response = await axios.post("http://192.168.137.163:8000/api/register", {
+      const response = await axios.post("http://127.0.0.1:8000/api/register", {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
         email: formData.email.trim(),
@@ -119,17 +115,17 @@ export default function AuthPage() {
         setShowVerification(true);
       }
     } catch (error) {
-      showMessage(
-        error.response?.data?.message || "Registration failed",
-        "error"
-      );
+      showMessage(error.response?.data?.message || "Registration failed", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
-      const response = await axios.post("http://192.168.137.163:8000/api/verify", {
+      const response = await axios.post("http://127.0.0.1:8000/api/verify", {
         email: formData.email.trim(),
         code: code,
       });
@@ -143,6 +139,8 @@ export default function AuthPage() {
       }
     } catch (error) {
       showMessage("Verification failed", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,28 +150,27 @@ export default function AuthPage() {
       showMessage("Email is required", "error");
       return;
     }
+    setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://192.168.137.163:8000/api/forgot",
-        {
-          email: forgotEmail.trim(),
-        }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/api/forgot", {
+        email: forgotEmail.trim(),
+      });
       if (response.data.status === 200 && response.data.success) {
-        console.log(response);
         showMessage("📩 Reset link sent to your email", "success");
         setAuthMode("signIn");
       }
     } catch (err) {
       showMessage("Failed to send reset link", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8 dark:bg-black px-4">
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md relative">
+      <div className="min-h-screen bg-gray-200  flex items-center justify-center p-8 dark:bg-black/90 px-4">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl shadow-black/30 w-full max-w-md relative">
           <div className="flex justify-between mb-6">
             <button
               onClick={() => setAuthMode("signIn")}
@@ -223,8 +220,10 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
                 <div className="relative">
-
                 <input
                   required
                   a="true"
@@ -258,9 +257,10 @@ export default function AuthPage() {
                 </div>
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full bg-blue-600 active:scale-[1.05] active:bg-slate-600 text-white py-2 rounded hover:bg-blue-700 transition"
                 >
-                  Sign In
+                  {isLoading ? "Signing In..." : "Sign In"}
                 </button>
               </motion.form>
             )}
@@ -292,6 +292,9 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.firstname && (
+                  <p className="text-red-500 text-sm">{errors.firstname}</p>
+                )}
                 <input
                 required
                   a="true"
@@ -301,6 +304,9 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.lastname && (
+                  <p className="text-red-500 text-sm">{errors.lastname}</p>
+                )}
                 <input
                 required
                   a="true"
@@ -310,6 +316,9 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
                 <input
                 required
                   a="true"
@@ -319,6 +328,9 @@ export default function AuthPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.phone_number && (
+                  <p className="text-red-500 text-sm">{errors.phone_number}</p>
+                )}
                 <select
                   name="province"
                   value={formData.province}
@@ -351,6 +363,9 @@ export default function AuthPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
                 <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
@@ -371,6 +386,9 @@ export default function AuthPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white"
                 />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+                )}
                 <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -381,9 +399,10 @@ export default function AuthPage() {
                 </div>
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full bg-blue-600 text-white active:scale-[1.05] active:bg-slate-600 py-2 rounded hover:bg-blue-700 transition"
                 >
-                  Sign Up
+                  {isLoading ? "Signing Up..." : "Sign Up"}
                 </button>
               </motion.form>
             )}
@@ -416,9 +435,10 @@ export default function AuthPage() {
                 />
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full bg-blue-600 text-white py-2 active:scale-[1.05] active:bg-slate-600 rounded hover:bg-blue-700 transition"
                 >
-                  Send Reset Link
+                  {isLoading ? "Sending..." : "Send Reset Link"}
                 </button>
                 <button
                   type="button"
@@ -467,12 +487,17 @@ export default function AuthPage() {
                     onChange={(e) => setCode(e.target.value)}
                     className="w-full px-4 py-2 border rounded mb-4 dark:bg-gray-700 dark:text-white"
                   />
+                  {
+                    errors.code && code.length < 6 && (
+                    <p className="text-red-500 text-sm">{errors.code}</p>
+                  )}
                   <button
                     onClick={handleVerify}
                     type="submit"
+                    disabled={isLoading}
                     className="w-full bg-blue-600 active:scale-[1.05] active:bg-slate-600 text-white py-2 rounded  hover:bg-blue-700 transition"
                   >
-                    Verify Account
+                    {isLoading ? "Verifying..." : "Verify Account"}
                   </button>
                 </motion.form>
               </motion.div>

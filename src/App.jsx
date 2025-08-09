@@ -17,6 +17,12 @@ import Block from "./Components/BlockAttack";
 import AdminSettings from "./Admin/AdminComponents/AdminSettings";
 import ResetPassword from "./Components/Reset";
 import UserSettings from "./AllUsers/UserComponent/UserSettings";
+import ThankYou from "./AllUsers/UserComponent/Thanks";
+import UserPledge from "./AllUsers/UserComponent/Pledge";
+import PayPledge from "./AllUsers/UserComponent/PayPledge";
+import Pledges from "./AllUsers/UserComponent/Pledges";
+import PledgeThankYou from "./AllUsers/UserComponent/pledgeThanks";
+// import DonationTabs from "./AllUsers/UserComponent/Tab";
 
 export default function App() {
   return (
@@ -30,6 +36,8 @@ export default function App() {
       <Route path="/block" element={<Block/>}/>
       <Route path="/logout" element={<Logout/>}/>
       <Route path="/reset" element={<ResetPassword/>}/>
+      <Route path="/thank-you" element={<ThankYou/>}/>
+      <Route path="/pledge-thank-you" element={<PledgeThankYou/>}/>
       
 
       {/* Dashboard Route */}
@@ -38,6 +46,10 @@ export default function App() {
   <Route path="donate" element={<MakeDonation />} />
   <Route path="history" element={<PaymentHistory />} />
   <Route path="settings" element={<UserSettings />} />
+  <Route path="pledges" element={<Pledges />} />
+  {/* <Route path="pay-pledge" element={<PayPledge />} /> */}
+  {/* <Route path="tab" element={<DonationTabs />} /> */}
+  {/* <Route path="chat" element={<UserChat />} />   */}
 </Route>
         
         {/* Admin Dashboard Route */}
@@ -45,7 +57,9 @@ export default function App() {
           <Route index element={<AdminOverview/>}/>
           <Route path="users" element={<AdminUsers/>}/>
           <Route path="payments" element={<AdminPayments/>}/>
+          <Route path="payments" element={<AdminPayments/>}/>
           <Route path="settings" element={<AdminSettings/>}/>
+          {/* <Route path="chat" element={<AdminChat />} /> */}
         </Route>
 
     </Routes>

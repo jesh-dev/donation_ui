@@ -8,6 +8,7 @@ const links = [
   { to: "/admin/users", label: "Users", icon: <Users size={18} /> },
   { to: "/admin/payments", label: "Payments", icon: <CreditCard size={18} /> },
   { to: "/admin/settings", label: "settings", icon: <CreditCard size={18} /> },
+  // { to: "/admin/chat", label: "Chat with Users", icon: <CreditCard size={18} /> },
 ];
 
 export default function UserSidebar() {

@@ -14,6 +14,7 @@ import {
   FaTwitter,
   FaInstagram,
   FaYoutube,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 export default function Footer() {
@@ -69,6 +70,14 @@ export default function Footer() {
             >
               <FaYoutube size={18} className="hover:animate-pulse" />
             </a>
+            <a
+              href="https://whatsapp.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-500 hover:scale-[2.05] transition"
+            >
+              <FaWhatsapp className="hover:animate-wiggle" size={20} />
+            </a>
           </div>
         </div>
 
@@ -104,7 +113,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="/login"
+                to="/register"
                 className="flex items-center hover:scale-[1.05] justify-center sm:justify-start gap-2 hover:text-yellow-300 transition"
               >
                 <LogIn className="w-5 h-5" /> Login
@@ -157,15 +166,15 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             <li className="flex items-center justify-center sm:justify-start gap-2">
               <MailCheck className="text-yellow-400 animate-pulse w-5 h-5" />
-              <span>support@ecef.ng</span>
+              <span>jeshrunlaw@gmail.com</span>
             </li>
             <li className="flex items-center justify-center sm:justify-start gap-2">
               <Phone className="text-green-400 animate-wiggle w-5 h-5" />
-              <span>+234 800 000 0000</span>
+              <span>+2347063215227</span>
             </li>
             <li className="flex items-center justify-center sm:justify-start gap-2">
               <MapPin className="text-red-400 w-7 animate-bounce h-7" />
-              <span>123 Faith Avenue, Port Harcourt</span>
+              <span>3 Soloki Avenue, Lagos</span>
             </li>
           </ul>
         </div>

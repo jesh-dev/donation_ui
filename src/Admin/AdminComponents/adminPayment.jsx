@@ -16,7 +16,7 @@ export default function AdminPayments() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://192.168.137.163:8000/api/admin/history?page=${page}&per_page=${perPage}`,
+        `http://127.0.0.1:8000/api/admin/history?page=${page}&per_page=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -24,15 +24,6 @@ export default function AdminPayments() {
           },
         }
       );
-      // const response = await axios.get(
-      //   `http://127.0.0.1:8000/api/admin/history?page=${page}&per_page=${perPage}`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //       Accept: "application/json",
-      //     },
-      //   }
-      // );
 
       setPayments(response.data.data);
       setCurrentPage(response.data.current_page);
@@ -89,8 +80,11 @@ export default function AdminPayments() {
                   className="border-b dark:border-gray-700 hover:bg-gray-900 dark:hover:bg-gray-700"
                 >
                   <td className="px-4 py-2 text-white dark:text-gray-200">
-                    {pay.user
-                      ? `${pay.user.firstname} ${pay.user.lastname}`
+                    {
+                    pay.user
+
+                    //  ${pay.user.lastname}`
+                      ? `${pay.user.email}`
                       : "Anonymous"}
                   </td>
                   <td className="px-4 py-2 text-white dark:text-gray-200">
@@ -165,3 +159,4 @@ export default function AdminPayments() {
     </div>
   );
 }
+

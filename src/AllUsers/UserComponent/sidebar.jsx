@@ -21,9 +21,13 @@ export default function UserSidebar() {
 
   const links = [
     { to: "/dashboard", label: "Overview" },
-    { to: "/dashboard/donate", label: "Make a Donation" },
-    { to: "/dashboard/history", label: "Payment History" },
+    { to: "/dashboard/donate", label: "Donate" },
+    { to: "/dashboard/history", label: " History" },
+    { to: "/dashboard/pledges", label: "Pledge" },
+    // { to: "/dashboard/pay-pledge", label: "Pay Pledge" },
     { to: "/dashboard/settings", label: "Settings" },
+    // { to: "/dashboard/tab", label: "Pledge Tab" },
+    // { to: "/dashboard/chat", label: "Chat with Admin" },
   ];
 
   return (

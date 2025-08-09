@@ -46,7 +46,7 @@ function ContactPage() {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/contact", {
+      const response = await axios.post("http://127.0.0.0.1:8000/api/contact", {
         name: formData.name.trim(),
         email: formData.email.trim(),
         subject: formData.subject.trim(),
