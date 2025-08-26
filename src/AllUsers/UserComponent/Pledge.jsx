@@ -17,7 +17,7 @@ export default function UserPledge() {
     try {
       const token = localStorage.getItem("token");
       
-      const res = await axios.get("http://127.0.0.1:8000/api/pledges/current", {
+      const res = await axios.get("https://ecef.nhsurulere.site/api/pledges/current", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +32,7 @@ export default function UserPledge() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/pledge",
+        "https://ecef.nhsurulere.site/api/pledge",
         { amount, due_date: dueDate },
         {
           headers: {

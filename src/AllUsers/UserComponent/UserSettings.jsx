@@ -50,7 +50,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://127.0.0.0.1:8000/api/user/settings",
+        "https://ecef.nhsurulere.site/api/user/settings",
         formData,
         {
           headers: {
@@ -78,7 +78,7 @@ export default function UserSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://127.0.0.1:8000/api/user/password",
+        "https://ecef.nhsurulere.site/api/user/password",
         passwordData,
         {
           headers: {

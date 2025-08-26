@@ -12,7 +12,7 @@ export default function PayPledge() {
 
   const fetchPledge = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/pledges/current", {
+      const res = await axios.get("https://ecef.nhsurulere.site/api/pledges/current", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,7 +31,7 @@ export default function PayPledge() {
 
     try {
       const res = await axios.post(
-        `http://127.0.0.1:8000/api/pledge/${pledge.id}/pay`,
+        `https://ecef.nhsurulere.site/api/pledge/${pledge.id}/pay`,
         { amount },
         {
           metadata: {

@@ -16,7 +16,7 @@ export default function AdminPayments() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/admin/history?page=${page}&per_page=${perPage}`,
+        `https://ecef.nhsurulere.site/api/admin/history?page=${page}&per_page=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

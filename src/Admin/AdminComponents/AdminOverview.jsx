@@ -35,7 +35,7 @@ export default function DonationOverview() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get(`http://127.0.0.1:8000/api/admin/overview?filter=${filter}`, {
+        const res = await axios.get(`https://ecef.nhsurulere.site/api/admin/overview?filter=${filter}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",

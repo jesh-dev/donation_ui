@@ -16,7 +16,7 @@ const { showMessage } = useMessage();
 
   const fetchUsers = (page = 1) => {
     setLoading(true);
-    axios.get(`http://127.0.0.1:8000/api/admin/users?page=${page}`, {
+    axios.get(`https://ecef.nhsurulere.site/api/admin/users?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
@@ -55,7 +55,7 @@ const { showMessage } = useMessage();
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      axios.delete(`http://127.0.0.1:8000/api/admin/users/${id}`, {
+      axios.delete(`https://ecef.nhsurulere.site/api/admin/users/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const { showMessage } = useMessage();
     e.preventDefault();
     if (!editingUser) return;
 
-    axios.put(`http://127.0.0.1:8000/api/admin/users/${editingUser.id}`, formData, {
+    axios.put(`https://ecef.nhsurulere.site/api/admin/users/${editingUser.id}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

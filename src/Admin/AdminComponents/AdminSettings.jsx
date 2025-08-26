@@ -32,7 +32,7 @@ export default function AdminSettings() {
   // ✅ Fetch settings on mount
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/admin/settings")
+      .get("https://ecef.nhsurulere.site/api/admin/settings")
       .then((res) => {
         setSiteName(res.data.site_name || "");
         setRegistrationOpen(res.data.registration_open ?? true);

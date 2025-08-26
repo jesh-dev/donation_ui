@@ -32,7 +32,7 @@ export default function MakeDonation({ onSuccess }) {
     const token = localStorage.getItem("token");
 
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/paystack/initialize",
+      "https://ecef.nhsurulere.site/api/paystack/initialize",
       {
         email: user.email,
         amount,

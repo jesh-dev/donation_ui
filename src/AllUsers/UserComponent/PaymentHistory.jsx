@@ -20,7 +20,7 @@ export default function PaymentHistory() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/history?page=${page}&per_page=${perPageCount}`,
+        `https://ecef.nhsurulere.site/api/history?page=${page}&per_page=${perPageCount}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
