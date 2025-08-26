@@ -70,7 +70,7 @@ export default function AuthPage() {
     if (!validateLoginForm()) return;
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
+      const response = await axios.post("https://ecef.nhsurulere.site/api/login", {
         email: formData.email.trim(),
         password: formData.password.trim(),
       }, {
@@ -100,7 +100,7 @@ export default function AuthPage() {
     if (!validateForm()) return;
     setIsLoading(true);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register", {
+      const response = await axios.post("https://ecef.nhsurulere.site/api/register", {
         firstname: formData.firstname.trim(),
         lastname: formData.lastname.trim(),
         email: formData.email.trim(),
@@ -125,7 +125,7 @@ export default function AuthPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/verify", {
+      const response = await axios.post("https://ecef.nhsurulere.site/api/verify", {
         email: formData.email.trim(),
         code: code,
       });
@@ -152,7 +152,7 @@ export default function AuthPage() {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/forgot", {
+      const response = await axios.post("https://ecef.nhsurulere.site/api/forgot", {
         email: forgotEmail.trim(),
       });
       if (response.data.status === 200 && response.data.success) {
